@@ -31,6 +31,10 @@ function affichage_colonnes(contenu) {
         rows.push(lignes_i);
     }
 
+
+    // Appel de la fonction pour retirer les lignes vides
+    retirerLignesVides();
+
     let checkboxes = "<fieldset>";
     checkboxes += "  <legend>Choisissez les colonnes </legend>"
     for (let j = 0; j < rows[0].length; j++) {
@@ -41,9 +45,11 @@ function affichage_colonnes(contenu) {
     document.getElementById("table").innerHTML = checkboxes;
     document.getElementById("table").innerHTML += `<button onclick="afficherTableau()">Afficher</button>`;
     document.getElementById("table").innerHTML += `<button onclick="Similarity()">Similarity</button>`;
+    document.getElementById("table").innerHTML += `<button onclick="Improve_csv()">Improve</button>`;
+}
+function Improve_csv() {
 
 }
-
 function afficherTableau() {
     let selectedCols = Array.from(document.querySelectorAll('input.colSelect:checked')).map(input => parseInt(input.value));
     console.log(selectedCols);
@@ -59,6 +65,25 @@ function afficherTableau() {
 
     // Ouvrir une nouvelle fenêtre pour afficher le tableau
     window.open('affichage.html', '_blank');
+}
+
+function retirerLignesVides() {
+    if (rows.length === 0) {
+        console.error("Aucune donnée disponible pour traitement.");
+        return;
+    }
+
+    // Filtrer les lignes où toutes les colonnes sont vides
+    const filteredRows = rows.filter(row => {
+        // Vérifier si au moins une des colonnes dans une ligne n'est pas vide
+        return row.some(value => value.trim() !== "");
+    });
+
+    // Mettre à jour les lignes globales `rows`
+    rows = filteredRows;
+
+    console.log("Lignes vides retirées. Voici les données mises à jour :");
+    console.log(rows);
 }
 
 function Similarity() {
