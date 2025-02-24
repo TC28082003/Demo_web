@@ -45,11 +45,8 @@ function affichage_colonnes(contenu) {
     document.getElementById("table").innerHTML = checkboxes;
     document.getElementById("table").innerHTML += `<button onclick="afficherTableau()">Afficher</button>`;
     document.getElementById("table").innerHTML += `<button onclick="Similarity()">Similarity</button>`;
-    document.getElementById("table").innerHTML += `<button onclick="Improve_csv()">Improve</button>`;
 }
-function Improve_csv() {
 
-}
 function afficherTableau() {
     let selectedCols = Array.from(document.querySelectorAll('input.colSelect:checked')).map(input => parseInt(input.value));
     console.log(selectedCols);
