@@ -35,105 +35,45 @@ function affichage_colonnes(contenu) {
     checkboxes += "  <legend>Choisissez les colonnes </legend>"
     for (let j = 0; j < rows[0].length; j++) {
         checkboxes += `<input type="checkbox" class="colSelect" id = "${j}" value="${j}">`;
-        checkboxes += `<label for = "${j}"> ${rows[0][j].trim()} </label>`; 
+        checkboxes += `<label for = "${j}"> ${rows[0][j]} </label>`; 
     }
     checkboxes += "</fieldset> <br>"; // **Correction : fermeture correcte de la ligne**
     document.getElementById("table").innerHTML = checkboxes;
     document.getElementById("table").innerHTML += `<button onclick="afficherTableau()">Afficher</button>`;
-    document.getElementById("table").innerHTML += `<button onclick="similarity.js">Similarity</button>`;
+    document.getElementById("table").innerHTML += `<button onclick="Similarity()">Similarity</button>`;
 
-}
-
-
-// Fonction d'exportation CSV
-function export_en_CSV() {
-    let csvContent = "";
-    for (let i = 0; i < rows.length; i++) {
-        let rowData = [];
-        for (let j = 0; j < rows[i].length; j++) {
-            rowData.push(rows[i][j]);
-        }
-        csvContent += rowData.join(",") + "\n";
-    }
-
-    let blob = new Blob([csvContent], { type: "text/csv" });
-    let link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "exported_data1.csv";    
-    link.click();
 }
 
 function afficherTableau() {
     let selectedCols = Array.from(document.querySelectorAll('input.colSelect:checked')).map(input => parseInt(input.value));
-    
+    console.log(selectedCols);
+
     if (selectedCols.length === 0) {
         alert("Veuillez sélectionner au moins une colonne !");
         return;
     }
 
-    // Ouvrir une nouvelle fenêtre
-    let newTab = window.open("", "_blank");
-    if (!newTab) {
-        alert("Veuillez autoriser les pop-ups pour voir le tableau !");
+    // Stocker les colonnes et les lignes dans localStorage
+    localStorage.setItem('selectedColumns', JSON.stringify(selectedCols));
+    localStorage.setItem('rows', JSON.stringify(rows));
+
+    // Ouvrir une nouvelle fenêtre pour afficher le tableau
+    window.open('affichage.html', '_blank');
+}
+
+function Similarity() {
+    let selectedCols = Array.from(document.querySelectorAll('input.colSelect:checked')).map(input => parseInt(input.value));
+    console.log(selectedCols);
+
+    if (selectedCols.length === 0) {
+        alert("Veuillez sélectionner au moins une colonne !");
         return;
     }
 
-    let newDocument = newTab.document;
-    newDocument.write("<html><head><title>Des colonnes selection</title>");
-    newDocument.write(`<style>
-        body {font-family: 'Poppins', sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; text-align: center; }
-        table { border-collapse: collapse; width: 80%; margin: auto; }
-        th, td { border: 1px solid black; padding: 8px; text-align: left; }
-        th { background-color: #007bff; color: white; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-        button{height: 50px; width: 30%; color:rgb(255, 127, 127); margin: 0px; text-align: center; padding: 1%; background-color: aqua; Border-radius: 60px; Border: 1px dashed #999;}
-        .table-container { max-height: 70%; overflow-y: auto; Border-radius: 60px; Border: 1px dashed #999;}
-    </style>`);
-    newDocument.write("</head><body>");
-    newDocument.write("<h2>Tableau Filtré</h2>");
-    
-    let table = "<div class='table-container'><table><thead><tr>";
-    //Faire des colonnes en tete
-    selectedCols.forEach(colIndex => {
-        table += `<th>${rows[0][colIndex].trim()}</th>`;
-    });
-    table += "</tr></thead><tbody>";
+    // Stocker les colonnes et les lignes dans localStorage
+    localStorage.setItem('selectedColumns', JSON.stringify(selectedCols));
+    localStorage.setItem('rows', JSON.stringify(rows));
 
-    // Des valeurs pour chaque colonnes
-    for (let i = 1; i < rows.length; i++) {
-        table += "<tr>";
-        selectedCols.forEach(colIndex => {
-            table += `<td>${rows[i][colIndex].trim()}</td>`;
-        });
-        table += "</tr>";
-    }
-    
-    table += "</tbody></table></div><br><br>";
-        // Ajouter la fonction export_en_CSV() dans la nouvelle fenêtre
-        newDocument.write(`<script>
-            function export_en_CSV() {
-                let csvContent = "";
-                let table = document.querySelector("table");
-                let rows = table.querySelectorAll("tr");
-    
-                rows.forEach(row => {
-                    let rowData = [];
-                    row.querySelectorAll("th, td").forEach(cell => rowData.push(cell.innerText));
-                    csvContent += rowData.join(",") + "\\n";
-                });
-    
-                let blob = new Blob([csvContent], { type: "text/csv" });
-                let link = document.createElement("a");
-                link.href = URL.createObjectURL(blob);
-                link.download = "exported_data.csv";    
-                link.click();
-            }
-        </script>`);
-    table += `<br><br><button onclick="export_en_CSV()">Sauvegarder CSV</button>`;
-
-    newDocument.write(table);
-    newDocument.write("</body></html>");
-    newDocument.close();
+    // Ouvrir la nouvelle page
+    window.open("similarity.html", "_blank");
 }
-
-
