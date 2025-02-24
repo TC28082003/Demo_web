@@ -35,7 +35,7 @@ function affichage_colonnes(contenu) {
     // Appel de la fonction pour retirer les lignes vides
     retirerLignesVides();
 
-    let checkboxes = `<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;">`;
+    let checkboxes = `<fieldset><legend>List colonnes</legend><div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;">`;
 
     for (let j = 0; j < rows[0].length; j++) {
         // Ajout de chaque input et label avec mise en page par div
@@ -45,7 +45,7 @@ function affichage_colonnes(contenu) {
         </div>`;
     }
 
-checkboxes += `</div>`;
+checkboxes += `</div></fieldset>`;
     document.getElementById("table").innerHTML = checkboxes;
     document.getElementById("table").innerHTML += `<button onclick="afficherTableau()">Afficher</button>`;
     document.getElementById("table").innerHTML += `<button onclick="Similarity()">Similarity</button>`;
