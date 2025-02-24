@@ -35,13 +35,17 @@ function affichage_colonnes(contenu) {
     // Appel de la fonction pour retirer les lignes vides
     retirerLignesVides();
 
-    let checkboxes = "<fieldset>";
-    checkboxes += "  <legend>Choisissez les colonnes </legend>"
+    let checkboxes = `<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;">`;
+
     for (let j = 0; j < rows[0].length; j++) {
-        checkboxes += `<input type="checkbox" class="colSelect" id = "${j}" value="${j}">`;
-        checkboxes += `<label for = "${j}"> ${rows[0][j]} </label>`; 
+        // Ajout de chaque input et label avec mise en page par div
+        checkboxes += `<div>
+            <input type="checkbox" class="colSelect" id="${j}" value="${j}">
+            <label for="${j}">${rows[0][j]}</label>
+        </div>`;
     }
-    checkboxes += "</fieldset> <br>"; // **Correction : fermeture correcte de la ligne**
+
+checkboxes += `</div>`;
     document.getElementById("table").innerHTML = checkboxes;
     document.getElementById("table").innerHTML += `<button onclick="afficherTableau()">Afficher</button>`;
     document.getElementById("table").innerHTML += `<button onclick="Similarity()">Similarity</button>`;
