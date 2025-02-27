@@ -1,6 +1,6 @@
-        // Récupérer les colonnes et les lignes depuis localStorage
-        const selectedCols = JSON.parse(localStorage.getItem('selectedColumns')) || [];
-        let rows = JSON.parse(localStorage.getItem('rows')) || [];
+        // Variables globales pour les colonnes et les lignes
+        let selectedCols = [];
+        let rows = [];
 
         // Afficher le tableau
         function afficherTableau() {
@@ -25,6 +25,28 @@
             table += "</tbody></table>";
             document.getElementById('table').innerHTML = table;
         }
+
+            // Écouter les messages de la fenêtre parent
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.action === 'updateTable') {
+                // Mettre à jour les valeurs depuis localStorage
+                const updatedCols = JSON.parse(localStorage.getItem('selectedColumns')) || [];
+                const updatedRows = JSON.parse(localStorage.getItem('rows')) || [];
+
+                // Réinitialiser les données globales
+                selectedCols.length = 0;
+                selectedCols.push(...updatedCols);
+                rows.length = 0;
+                rows.push(...updatedRows);
+
+                // Mettre à jour le tableau
+                afficherTableau();
+            }
+        });
+        // Initier le tableau lors du premier chargement
+        selectedCols = JSON.parse(localStorage.getItem('selectedColumns')) || [];
+        rows = JSON.parse(localStorage.getItem('rows')) || [];
+        afficherTableau();
 
         // Fonction pour calculer la distance Euclidienne entre deux vecteurs
         function euclideanDistance(vec1, vec2) {
@@ -143,5 +165,3 @@ function calculer_similarity() {
     `);
     newWindow.document.close();
 }
-        // Appeler la fonction pour afficher le tableau
-        afficherTableau();
