@@ -131,7 +131,7 @@ function calculer_similarity() {
     // Ouvrir table résultat dans un nouveau onglet
     const newWindow = window.open("", "_blank");
     newWindow.document.write(`
-        <html>
+        <html lang="en">
             <head>
                 <title>Résultats Similarités</title>
                 <link rel="stylesheet" href="style_table.css">

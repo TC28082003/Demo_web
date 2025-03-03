@@ -1,7 +1,6 @@
         // Variables globales
         let profiles = {}; // Stockera les colonnes correspondant aux profils
         let rows = [];
-        let selectedCols = [];
 
         window.addEventListener('message', (event) => {
             if (event.data && event.data.action === 'updateTable') {

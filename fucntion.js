@@ -125,14 +125,10 @@ function retirerLignesVides() {
         return;
     }
 
-    // Filtrer les lignes où toutes les colonnes sont vides
-    const filteredRows = rows.filter(row => {
+     rows = rows.filter(row => {
         // Vérifier si au moins une des colonnes dans une ligne n'est pas vide
         return row.some(value => value.trim() !== "");
     });
-
-    // Mettre à jour les lignes globales `rows`
-    rows = filteredRows;
 
     console.log("Lignes vides retirées. Voici les données mises à jour :");
     console.log(rows);
@@ -155,7 +151,13 @@ function connect_to_profil() {
 
     // Récupérer les profils actuels depuis le stockage local
     let profiles = JSON.parse(localStorage.getItem('profiles') || "{}");
-        // Créer un objet pour stocker les colonnes sélectionnées et leurs valeurs
+
+    if( profiles[profileName] ) {
+        alert("Profil existe. Veuillez choisir un autre nom de profil !");
+        return;
+    }
+
+    // Créer un objet pour stocker les colonnes sélectionnées et leurs valeurs
     let selectedData = {};
 
     // Parcourir les index des colonnes sélectionnées et les remplir avec leurs données
@@ -170,7 +172,6 @@ function connect_to_profil() {
 
     // Associer le profil au tableau des colonnes sélectionnées
     profiles[profileName] = selectedData;
-
     // Sauvegarder dans le stockage local
     localStorage.setItem('profiles', JSON.stringify(profiles));
     console.log(profiles);
