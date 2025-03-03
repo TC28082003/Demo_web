@@ -56,7 +56,7 @@ function affichage_colonnes(contenu) {
            rows.push(lignes_i);
        }
 
-
+    delete_delimiter();
     retirerLignesVides();
 
     let htmlContent = "";
@@ -102,7 +102,23 @@ function updateProfileDisplay(input) {
     const displayProfileName = document.getElementById("displayProfileName");
     displayProfileName.textContent = input.value.trim() || "(Aucun)";
 }
+function delete_delimiter() {
+    if (rows.length === 0) {
+        console.error("Aucune donnée disponible pour traitement.");
+        return;
+    }
 
+    // Parcourir chaque ligne de données
+    for (let i = 0; i < rows.length; i++) {
+        for (let j = 0; j < rows[i].length; j++) {
+            // Supprimer les guillemets simples ou doubles autour de chaque cellule
+            rows[i][j] = rows[i][j].trim().replace(/^['"]|['"]$/g, '');
+        }
+    }
+
+    console.log("Délimiteurs supprimés avec succès !");
+    console.log(rows); // Affiche les données nettoyées
+}
 function retirerLignesVides() {
     if (rows.length === 0) {
         console.error("Aucune donnée disponible pour traitement.");
@@ -139,9 +155,21 @@ function connect_to_profil() {
 
     // Récupérer les profils actuels depuis le stockage local
     let profiles = JSON.parse(localStorage.getItem('profiles') || "{}");
+        // Créer un objet pour stocker les colonnes sélectionnées et leurs valeurs
+    let selectedData = {};
+
+    // Parcourir les index des colonnes sélectionnées et les remplir avec leurs données
+    selectedCols.forEach(colIndex => {
+        selectedData[rows[0][colIndex]] = [];
+        for (let i = 1; i < rows.length; i++) { // Ignorer la première ligne (en-têtes)
+            if (rows[i] && rows[i][colIndex] !== undefined) {
+                selectedData[rows[0][colIndex]].push(rows[i][colIndex]);
+            }
+        }
+    });
 
     // Associer le profil au tableau des colonnes sélectionnées
-    profiles[profileName] = selectedCols;
+    profiles[profileName] = selectedData;
 
     // Sauvegarder dans le stockage local
     localStorage.setItem('profiles', JSON.stringify(profiles));

@@ -96,31 +96,48 @@
 
         // Fonction pour afficher un tableau basé sur le profil sélectionné
         function afficherProfil(profileName) {
-            const selectedCols = profiles[profileName]; // Récupérer les colonnes du profil sélectionné
-
-            if (!selectedCols || rows.length === 0) {
-                alert("Données indisponibles pour ce profil !");
+            // Vérifier si le profil existe dans l'objet profiles
+            if (!profiles[profileName]) {
+                alert(`Le profil "${profileName}" n'existe pas !`);
                 return;
             }
 
-            let table = "<h2 id=\"profileTitle\">Table Profils</h2> <br><br><table><thead><tr>";
-            // Ajouter les colonnes en-têtes
-            selectedCols.forEach(colIndex => {
-                table += `<th>${rows[0][colIndex]}</th>`;
-            });
-            table += "</tr></thead><tbody>";
+            // Récupérer les données du profil
+            const profileData = profiles[profileName];
+            const columnHeaders = Object.keys(profileData); // Les colonnes (les clés)
+            console.log(columnHeaders);
+            const numRows = profileData[columnHeaders[0]].length; // Nombre de lignes basé sur le premier tableau
 
-            // Ajouter les lignes des colonnes
-            for (let i = 1; i < rows.length; i++) {
+            // Générer l'en-tête du tableau
+            let table = `
+                <h2 id="profileTitle">Profil : ${profileName}</h2>
+                <table>
+                    <thead>
+                        <tr>`;
+            columnHeaders.forEach(header => {
+                table += `<th>${header}</th>`;
+            });
+            table += `
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            // Générer les lignes du tableau
+            for (let i = 0; i < numRows; i++) {
                 table += "<tr>";
-                selectedCols.forEach(colIndex => {
-                    table += `<td>${rows[i][colIndex]}</td>`;
+                columnHeaders.forEach(header => {
+                    table += `<td>${profileData[header][i]}</td>`;
                 });
                 table += "</tr>";
             }
 
-            table += "</tbody></table>";
+            table += `
+                    </tbody>
+                </table>`;
+
+            // Injecter le tableau dans un élément HTML
             document.getElementById('table').innerHTML = table;
+
 
             // Mettre à jour le titre du profil
             const profileTitle = document.getElementById("profileTitle");
@@ -129,9 +146,17 @@
 
         // Fonction pour exporter en CSV
         function export_en_CSV(profileName) {
-            const selectedCols = profiles[profileName]; // Récupérer les colonnes du profil sélectionné
+            if (!profiles[profileName]) {
+                alert(`Le profil "${profileName}" n'existe pas !`);
+                return;
+            }
 
-            if (!selectedCols || rows.length === 0) {
+            // Récupérer les données du profil
+            const profileData = profiles[profileName];
+            const columnHeaders = Object.keys(profileData); // Les colonnes (les clés)
+            const numRows = profileData[columnHeaders[0]].length; // Nombre de lignes basé sur le premier tableau
+
+            if (!profileData || numRows === 0) {
                 alert("Données indisponibles pour ce profil !");
                 return;
             }
@@ -139,12 +164,12 @@
             // Construire le contenu CSV
             let csvContent = "";
             // Ajouter les en-têtes
-            csvContent += selectedCols.map(colIndex => rows[0][colIndex]).join(",") + "\n";
+            csvContent += columnHeaders.map(header => header).join(",") + "\n";
             // Ajouter les données
-            for (let i = 1; i < rows.length; i++) {
-                csvContent += selectedCols.map(colIndex => rows[i][colIndex]).join(",") + "\n";
+            for (let i = 0; i < numRows; i++) {
+                csvContent += columnHeaders.map(header => profileData[header][i]).join(",") + "\n";
             }
-
+            
             // Créer un fichier Blob pour le téléchargement
             const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
             const filename = `${profileName}.csv`; // Utilise le nom du profil

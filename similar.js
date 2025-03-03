@@ -156,7 +156,7 @@ function calculer_similarity() {
                         let blob = new Blob([csvContent], { type: "text/csv" });
                         let link = document.createElement("a");
                         link.href = URL.createObjectURL(blob);
-                        link.download = "exported_data.csv";
+                        link.download = "Result_similarity.csv";
                         link.click();
                 }
                 </script>
