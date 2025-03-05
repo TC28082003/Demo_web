@@ -46,7 +46,7 @@
                     <td style="text-align: center;">
                         <button style="background-color: #007bff; color: white; padding: 5px 10px; border: none; border-radius: 20px; cursor: pointer;"
                             onclick="afficherProfil('${profileName}')">
-                            See
+                            Display
                         </button>
                         <button style="background-color: #007bff; color: white; padding: 2px 2px; border: none; border-radius: 20px; cursor: pointer;"
                             onclick="export_en_CSV('${profileName}')">
@@ -66,7 +66,7 @@
         function afficherProfil(profileName) {
             // Vérifier si le profil existe dans l'objet profiles
             if (!profiles[profileName]) {
-                alert(`Le profil "${profileName}" n'existe pas !`);
+                alert(`Profile "${profileName}" does not exist !`);
                 return;
             }
 
