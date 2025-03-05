@@ -5,7 +5,7 @@
         // Afficher le tableau
         function afficherTableau() {
             let table = "<table><thead><tr>";
-            table += "<th>Sélectionner lignes</th>";
+            table += "<th>Select lines</th>";
 
             // Faire des colonnes en tête
             selectedCols.forEach(colIndex => {
@@ -98,7 +98,7 @@ function calculer_similarity() {
     const selectedRows = Array.from(document.querySelectorAll('input.rowSelect:checked')).map(input => parseInt(input.value));
 
     if (selectedRows.length === 0) {
-        alert("Veuillez sélectionner au moins une ligne !");
+        alert("Please select at least one line !");
         return;
     }
 
@@ -133,14 +133,14 @@ function calculer_similarity() {
     newWindow.document.write(`
         <html lang="en">
             <head>
-                <title>Résultats Similarités</title>
+                <title>Results Similarities</title>
                 <link rel="stylesheet" href="style_table.css">
             </head>
             <body>
                 <h2>Résultats des Similarités</h2>
                 ${table}
                 <br>
-                <button onclick="export_en_CSV()">Sauvegarder CSV</button>
+                <button onclick="export_en_CSV()">Save file</button>
                 <script>
                     function export_en_CSV() {
                         let csvContent = "";
