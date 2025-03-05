@@ -65,16 +65,16 @@ function affichage_colonnes(contenu) {
     htmlContent += `
         <div id="profileContainer" style="margin-bottom: 20px; text-align: center;">
             <h2 id="profileTitle" style="font-size: 22px; font-weight: bold; color: #007bff; margin-bottom: 10px;">
-                Nom du profil : <span id="displayProfileName" style="color: #FF4500;"></span>
+                Profile name : <span id="displayProfileName" style="color: #FF4500;"></span>
             </h2>
-            <input type="text" id="profileName" placeholder="Entrez un nom de profil"
+            <input type="text" id="profileName" placeholder="Enter a profile name"
                 style="padding: 10px; font-size: 16px; border: 1px solid #007bff; border-radius: 10px; width: 50%;"
                 oninput="updateProfileDisplay(this)">
         </div>
     `;
 
     // Génération des cases à cocher pour sélectionner les colonnes
-    htmlContent += `<fieldset><legend>List colonnes</legend>
+    htmlContent += `<fieldset><legend>List columns</legend>
                     <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;">`;
 
     for (let j = 0; j < rows[0].length; j++) {
@@ -90,7 +90,7 @@ function affichage_colonnes(contenu) {
 
     // Ajouter les boutons
     htmlContent += `
-        <button onclick="connect_to_profil()">Afficher</button>
+        <button onclick="connect_to_profil()">Display Profile</button>
         <button onclick="Similarity()">Similarity</button>
     `;
 
@@ -145,7 +145,7 @@ function connect_to_profil() {
     const profileName = profileNameInput.value.trim();
 
     if (!profileName || selectedCols.length === 0) {
-        alert("Veuillez entrer un nom de profil et sélectionner au moins une colonne !");
+        alert("Please enter a profile name and select at least one column!");
         return;
     }
 
