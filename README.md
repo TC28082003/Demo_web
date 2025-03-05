@@ -1,4 +1,4 @@
-You can see the demo in here: https://tc28082003.github.io/Demo_web/
+You can see the demo in here: https://tc28082003.github.io/Demo_web_version_1.0/
 
 Main functions in this version:
 
